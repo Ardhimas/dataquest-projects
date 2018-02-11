@@ -73,12 +73,53 @@ data['int_age'].describe()
 # Call the pandas.Series.describe() method on the int_income column of data, and display the result.
 # In a separate markdown cell, write up your findings.
 # Is there anything that we should be aware of about the results or our methodology?
+# They are very generalized and inaccurate.
 # Is this a true depiction of the incomes of survey participants?
-def convert_age_str_to_int(age):
-    if pd.isnull(age):
-        return None
-    int_age = int(age.split(' ')[0].replace('+', ''))
-    return int_age
+# No as it is rounded down.
 
-data['int_age'] = data['Age'].apply(convert_age_str_to_int)
-data['int_age'].describe()
+def convert_income_str_to_int(income):
+    if pd.isnull(income):
+        return None
+    first_char = income.split(' ')[0]
+    if first_char == 'Prefer':
+        return None
+    stripped_dollar = income.split(' ')[0].replace('$', '')
+    stripped_all = stripped_dollar.replace(',', '')
+    return int(stripped_all)
+
+data['int_income'] = data['How much total combined money did all members of your HOUSEHOLD earn last year?'].apply(convert_income_str_to_int)
+data['int_income'].describe()
+
+# See how far people earning under 150000 will travel.
+# Filter data, and only select rows where int_income is less than 150000.
+# Use indexing to select the How far will you travel for Thanksgiving? column.
+# Use the value_counts() method to count up how many times each value occurs in the column.
+# Display the results.
+# See how far people earning over 150000 will travel.
+# Filter data, and only select rows where int_income is greater than 150000.
+# Use indexing to select the How far will you travel for Thanksgiving? column.
+# Use the value_counts() method to count up how many times each value occurs in the column.
+# Display the results
+# Write up your findings in a markdown cell.
+# The findings dictate that for the wealthier group, a larger proportion are hosting thanksgiving at their home.
+income_less_than_150000 = data[data['int_income'] < 150000]
+how_far_less_counts = income_less_than_150000['How far will you travel for Thanksgiving?'].value_counts()
+print(how_far_less_counts)
+
+income_over_150000 = data[data['int_income'] > 150000]
+how_far_over_counts = income_over_150000['How far will you travel for Thanksgiving?'].value_counts()
+print(how_far_over_counts)
+
+# Generate a pivot table showing the average age of respondents for each category of Have you ever tried to meet up with hometown friends on Thanksgiving night? and Have you ever attended a "Friendsgiving?.
+# Call the pivot_table() method on data.
+# Pass in "Have you ever tried to meet up with hometown friends on Thanksgiving night?" to the index keyword argument.
+# Pass in 'Have you ever attended a "Friendsgiving?"' to the columns keyword argument.
+# Pass in "int_age" to the values keyword argument.
+# Display the results.
+# Generate a pivot table showing the average income of respondents for each category of Have you ever tried to meet up with hometown friends on Thanksgiving night? and Have you ever attended a "Friendsgiving?.
+# Write up a markdown cell with your findings.
+# The data shows that people who attend friendsgivings tend to be younger and make less money than those who don't
+friends_data = data.pivot_table(index='Have you ever tried to meet up with hometown friends on Thanksgiving night?', columns='Have you ever attended a "Friendsgiving?"', values='int_age')
+print(friends_data)
+income_data = data.pivot_table(index='Have you ever tried to meet up with hometown friends on Thanksgiving night?', columns='Have you ever attended a "Friendsgiving?"', values='int_income')
+print(income_data)
