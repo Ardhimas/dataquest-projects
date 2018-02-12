@@ -69,12 +69,31 @@ ax6.set_title('Median vs. Women')
 # We encourage you to experiment with different bin sizes and ranges when generating these histograms.
 
 cols = ["Sample_size", "Median", "Employed", "Full_time", "ShareWomen", "Unemployment_rate", "Men", "Women"]
-fig = plt.figure(figsize=(5,12))
-for r in range(1,5):
-    ax = fig.add_subplot(4,1,r)
-    ax = recent_grads[cols[r]].plot(kind='hist', rot=40)
+fig = plt.figure(figsize=(8,24))
+for r in range(8):
+    ax = fig.add_subplot(8,1, r+1)
+    ax = recent_grads[cols[r]].plot(kind='hist')
     ax.set_title(cols[r])
 
 # Use the plots to explore the following questions:
 # What percent of majors are predominantly male? Predominantly female?
 # What's the most common median salary range?
+
+# %%
+# Import scatter_matrix from pandas.tools.plotting
+from pandas.plotting import scatter_matrix
+# Create a 2 by 2 scatter matrix plot using the Sample_size and Median columns.
+scatter_matrix(recent_grads[['Sample_size', 'Median']])
+# Create a 3 by 3 scatter matrix plot using the Sample_size, Median, and Unemployment_rate columns.
+scatter_matrix(recent_grads[['Sample_size', 'Median', 'Unemployment_rate']])
+# Explore the questions from the last few steps using these scatter matrix plots. You may need to create more scatter matrix plots.
+
+# %%
+# Use bar plots to compare the percentages of women (ShareWomen) from the 10 highest paying majors and from the 10 lowest paying majors.
+# Trend shows that the percentages of women are higher in the lowest paying majors
+recent_grads.head(10).plot.bar(x='Major', y='ShareWomen')
+recent_grads.tail(10).plot.bar(x='Major', y='ShareWomen')
+# Use bar plots to compare the unemployment rate (Unemployment_rate) from the 10 highest paying majors and from the 10 lowest paying majors.
+recent_grads.head(10).plot.bar(x='Major', y='Unemployment_rate')
+recent_grads.tail(10).plot.bar(x='Major', y='Unemployment_rate')
+# Trend shows that the percentages of unemployment is higher in the lowest paying majors
