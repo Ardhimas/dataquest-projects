@@ -5,7 +5,8 @@ import matplotlib.pyplot as plt
 women_degrees = pd.read_csv('/Users/ardy/Documents/dataquest/Visualizing The Gender Gap In College Degrees/percent-bachelors-degrees-women-usa.csv')
 cb_dark_blue = (0/255,107/255,164/255)
 cb_orange = (255/255, 128/255, 14/255)
-stem_cats = ['Engineering', 'Computer Science', 'Psychology', 'Biology', 'Physical Sciences', 'Math and Statistics']
+cb_light_gray = (171/255, 171/255, 171/255)
+stem_cats = ['Psychology', 'Biology', 'Math and Statistics', 'Physical Sciences', 'Computer Science', 'Engineering']
 lib_arts_cats = ['Foreign Languages', 'English', 'Communications and Journalism', 'Art and Performance', 'Social Sciences and History']
 other_cats = ['Health Professions', 'Public Administration', 'Education', 'Agriculture','Business', 'Architecture']
 
@@ -24,7 +25,9 @@ for sp in range(0,18,3):
     ax.set_xlim(1968, 2011)
     ax.set_ylim(0,100)
     ax.set_title(stem_cats[cat_index])
-    ax.tick_params(bottom="off", top="off", left="off", right="off")
+    ax.tick_params(bottom="off", top="off", left="off", right="off", labelbottom="off")
+    ax.axhline(50, c=cb_light_gray, alpha=0.3)
+    ax.set_yticks([0,100])
 
     if cat_index == 0:
         ax.text(2003, 85, 'Women')
@@ -32,6 +35,7 @@ for sp in range(0,18,3):
     elif cat_index == 5:
         ax.text(2005, 87, 'Men')
         ax.text(2003, 7, 'Women')
+        ax.tick_params(labelbottom='on')
 
 # In the second column:
 # Generate line charts for both male and female percentages for every degree in lib_arts_cats.
@@ -46,11 +50,15 @@ for sp in range(1,16,3):
     ax.set_xlim(1968, 2011)
     ax.set_ylim(0,100)
     ax.set_title(lib_arts_cats[cat_index])
-    ax.tick_params(bottom="off", top="off", left="off", right="off")
+    ax.tick_params(bottom="off", top="off", left="off", right="off", labelbottom="off")
+    ax.axhline(50, c=cb_light_gray, alpha=0.3)
+    ax.set_yticks([0,100])
 
     if cat_index == 0:
-        ax.text(2003, 78, 'Women')
-        ax.text(2005, 18, 'Men')
+        ax.text(2003, 85, 'Women')
+        ax.text(2005, 10, 'Men')
+    elif cat_index == 4:
+        ax.tick_params(labelbottom='on')
 
 # In the third column:
 # Generate line charts for both male and female percentages for every degree in other_cats.
@@ -65,7 +73,9 @@ for sp in range(2,20,3):
     ax.set_xlim(1968, 2011)
     ax.set_ylim(0,100)
     ax.set_title(other_cats[cat_index])
-    ax.tick_params(bottom="off", top="off", left="off", right="off")
+    ax.tick_params(bottom="off", top="off", left="off", right="off", labelbottom="off")
+    ax.axhline(50, c=cb_light_gray, alpha=0.3)
+    ax.set_yticks([0,100])
 
     if cat_index == 0:
         ax.text(2003, 90, 'Women')
@@ -73,5 +83,7 @@ for sp in range(2,20,3):
     elif cat_index == 5:
         ax.text(2005, 62, 'Men')
         ax.text(2003, 30, 'Women')
+        ax.tick_params(labelbottom='on')
 
+plt.savefig('gender_degrees.png')
 plt.show()
